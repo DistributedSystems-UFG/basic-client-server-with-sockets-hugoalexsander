@@ -3,7 +3,10 @@ from constCS import * #-
 
 s = socket(AF_INET, SOCK_STREAM)
 s.connect((HOST, PORT)) # connect to server (block until accepted)
-s.send(str.encode('Hello, world'))  # send some data
-data = s.recv(1024)     # receive the response
-print (bytes.decode(data))            # print the result
-s.close()               # close the connection
+option = input("Opção: ")
+s.send(str.encode(option))
+text = input("Texto: ")
+s.send(str.encode(text))
+response = s.recv(1024)
+print(bytes.decode(response))
+s.close()

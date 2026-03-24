@@ -1,13 +1,26 @@
-from socket  import *
-from constCS import * #-
+from socket import *
+from constCS import *
 
-s = socket(AF_INET, SOCK_STREAM) 
-s.bind((HOST, PORT))  #-
-s.listen(1)           #-
-(conn, addr) = s.accept()  # returns new socket and addr. client 
-while True:                # forever
-  data = conn.recv(1024)   # receive data from client
-  if not data: break       # stop if client stopped
-  print(bytes.decode(data))
-  conn.send(str.encode(bytes.decode(data)+"*")) # return sent data plus an "*"
-conn.close()               # close the connection
+HOST = '0.0.0.0'
+s = socket(AF_INET, SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+(conn, addr) = s.accept()
+while True:
+    option = conn.recv(1024)
+    if not option: break
+    option = bytes.decode(option).strip()
+    print(option)
+    data = conn.recv(1024)
+    if not data: break
+    text = bytes.decode(data).strip()
+    print(text)
+    if option == "1":
+        result = text.upper()
+    elif option == "2":
+        result = f"*{text}*"
+    else:
+        result = "Servidor encerrado..."
+    response = result
+    conn.send(str.encode(response))
+conn.close()
